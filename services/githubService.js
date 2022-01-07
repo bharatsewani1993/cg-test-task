@@ -2,6 +2,7 @@ const { gql } = require('graphql-request');
 const { getGraphqlClient } = require('../common/graphqlClient');
 const { Octokit } = require("@octokit/rest");
 const CONSTANTS = require('../common/constants');
+const util = require('../util/checkFileName');
 
 
 class GithubService {
@@ -114,8 +115,8 @@ class GithubService {
     let text = '';
     for(var i=0;i<filesArr.entries.length;i++){ 
       let splitArr = filesArr.entries[i].name.split('.');
-      if(splitArr[1]){
-        if(filesArr.entries[i].name.split('.')[1].toString().trim().toLowerCase() === 'yml') {      
+      if(splitArr[1]){        
+        if(await util.validateFileExtension(filesArr.entries[i].name,CONSTANTS.YML_EXTENSION)) {      
           //get yml file content
           let variables = {};
           let query = gql`{repository(owner: "${repoOwnerName}", name: "${repoName}") {

@@ -1,5 +1,5 @@
 const NodeCache = require('node-cache');
-const GithubService = require('../services/github');
+const GithubService = require('../services/githubService');
 
 class GithubController {
 
@@ -31,15 +31,15 @@ class GithubController {
   }
 
   //get data from cache if available
-  async retrieveCachedData(cacheKey, serviceFn, serviceParam, serviceParam2) {
+  async retrieveCachedData(cacheKey, serviceFn, userName, repoName ) {
     console.log("cacheKey", cacheKey);
     const dataCached = this.cache.get(cacheKey);
     if (dataCached === undefined || dataCached === null) {
       console.log('[INFO] Cache Miss :: Retrieving data from Github API');
       if(serviceFn === 'getRepositoryDetails') {
-        var data = await this.githubService.getRepositoryDetails(serviceParam, serviceParam2);
+        var data = await this.githubService.getRepositoryDetails(userName, repoName );
       } else{
-        var data = await this.githubService[serviceFn](serviceParam);
+        var data = await this.githubService[serviceFn](userName);
       }
       this.cache.set(cacheKey, JSON.stringify(data), 60 * 1000);
       return data

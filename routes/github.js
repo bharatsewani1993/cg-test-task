@@ -1,5 +1,5 @@
 //Importing Github Controller
-const GithubController = require('../controllers/github');
+const GithubController = require('../controllers/githubController');
 
 //Exporting all routes and their respective functions
 module.exports = (router) => {
